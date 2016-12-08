@@ -1,0 +1,35 @@
+{
+  "name": "miserenkov/yii2-gearman",
+  "description": "Yii2 component for gearman",
+  "keywords": ["yii2", "queue", "gearman"],
+  "type": "yii2-component",
+  "license": "MIT",
+  "support": {
+    "email": "mi.serenkov@gmail.com",
+    "issues": "https://github.com/miserenkov/yii2-gearman/issues",
+    "source": "https://github.com/miserenkov/yii2-gearman"
+  },
+  "authors": [
+    {
+      "name": "Misha Serenkov",
+      "email": "mi.serenkov@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.5.0",
+    "yiisoft/yii2": "^2.0.6",
+    "react/event-loop": "0.4.*",
+    "psr/log": "~1"
+  },
+  "autoload": {
+    "psr-4": {
+      "miserenkov\\gearman\\": "src"
+    }
+  },
+  "require-dev": {
+    "codeception/codeception": "^2.2"
+  },
+  "suggest": {
+    "ext-gearman": "This library needs Gearman"
+  }
+}
