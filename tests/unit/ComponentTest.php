@@ -45,8 +45,6 @@ class ComponentTest extends Codeception\Test\Unit
             ]));
         }
 
-        Yii::$app->runAction('gearman/start', [
-            'id' => 1,
-        ]);
+        Yii::$app->runAction('gearman/start 1');
     }
 }
