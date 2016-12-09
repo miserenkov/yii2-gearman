@@ -34,8 +34,9 @@ addons:
 #  - mongo travis_test --eval 'db.addUser("travis", "test");'
 
 before_install:
-  - pecl install gearman
-#  - echo "extension=gearman.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - sh -c "if ['$TRAVIS_PHP_VERSION' >= '7.0']; then add-apt-repository -y ppa:ondrej/php && apt-get update && apt-get install php-gearman; fi"
+  - sh -c "if ['$TRAVIS_PHP_VERSION' < '7.0']; then pecl install gearman; fi"
+  - echo "extension=gearman.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 
 install:
   - composer self-update
