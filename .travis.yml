@@ -18,9 +18,7 @@ addons:
   apt:
     packages:
       - gearman-job-server
-      - php-pear
-      - make
-      - libgearman-dev
+      - php-gearman
 
 #services:
 #  - mongodb
@@ -32,10 +30,6 @@ addons:
 #  - psql -c "CREATE DATABASE travis_test;" -U postgres
 #  - pecl install -f mongodb-1.2.0
 #  - mongo travis_test --eval 'db.addUser("travis", "test");'
-
-before_install:
-  - pecl install gearman-1.0.3
-  - echo "extension=gearman.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 
 install:
   - composer self-update
