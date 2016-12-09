@@ -12,5 +12,8 @@
  */
 class ComponentTest extends Codeception\Test\Unit
 {
-
+    public function testGearmanExtension()
+    {
+        $this->assertTrue(extension_loaded('gearman'));
+    }
 }

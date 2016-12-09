@@ -31,5 +31,9 @@
   },
   "suggest": {
     "ext-gearman": "This library needs Gearman"
+  },
+  "scripts": {
+    "build-tests": "php vendor/codeception/codeception/codecept build",
+    "tests": "php vendor/codeception/codeception/codecept run"
   }
 }

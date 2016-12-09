@@ -14,6 +14,14 @@ matrix:
     - php: hhvm-3.6
     - php: nightly
 
+addons:
+  apt:
+    packages:
+      - gearman-job-server
+      - php-pear
+      - make
+      - libgearman-dev
+
 #services:
 #  - mongodb
 #  - mysql
@@ -25,10 +33,14 @@ matrix:
 #  - pecl install -f mongodb-1.2.0
 #  - mongo travis_test --eval 'db.addUser("travis", "test");'
 
+before_install:
+  - pecl install gearman-1.0.3
+  - echo "extension=gearman.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+
 install:
   - composer self-update
   - composer global require "fxp/composer-asset-plugin:*"
   - composer install
-  - vendor/bin/codecept build
+  - composer run build-tests
 
-script: vendor/bin/codecept run
+script: composer run tests
