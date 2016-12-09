@@ -3,17 +3,17 @@ sudo: required
 php:
 - 5.5
 - 5.6
-- 7.0
-- 7.1
-- nightly
-- hhvm-3.3
-- hhvm-3.6
+#- 7.0
+#- 7.1
+#- nightly
+#- hhvm-3.3
+#- hhvm-3.6
 
-matrix:
-  allow_failures:
-    - php: hhvm-3.3
-    - php: hhvm-3.6
-    - php: nightly
+#matrix:
+#  allow_failures:
+#    - php: hhvm-3.3
+#    - php: hhvm-3.6
+#    - php: nightly
 
 addons:
   apt:
@@ -35,14 +35,14 @@ addons:
 #  - mongo travis_test --eval 'db.addUser("travis", "test");'
 
 before_install:
-  - |
-     if [[ $TRAVIS_PHP_VERSION = "7."* ]]; then
-        sudo add-apt-repository -y ppa:ondrej/php
-        sudo apt-get update
-        sudo apt-get install -y php-gearman
-      else
-        pecl install gearman-1.0.3
-      fi
+#  - |
+#     if [[ $TRAVIS_PHP_VERSION = "7."* ]]; then
+#        sudo add-apt-repository -y ppa:ondrej/php
+#        sudo apt-get update
+#        sudo apt-get install -y php-gearman
+#      else
+  - pecl install gearman-1.0.3
+#      fi
   - echo "extension=gearman.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 
 install:
