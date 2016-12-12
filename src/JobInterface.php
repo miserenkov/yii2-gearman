@@ -20,10 +20,4 @@ interface JobInterface
      * @return mixed
      */
     public function execute(\GearmanJob $job = null);
-    /**
-     * @var $name string
-     */
-    public function setName($name);
-
-    public function init();
 }
