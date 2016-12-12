@@ -15,6 +15,12 @@ interface JobInterface
      * @return string
      */
     public function getName();
+
+    /**
+     * @param string $name
+     * @return void
+     */
+    public function setName($name);
     /**
      * @param \GearmanJob|null $job
      * @return mixed

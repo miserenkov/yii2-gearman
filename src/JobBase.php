@@ -13,6 +13,17 @@ use yii\base\Component;
 
 abstract class JobBase extends Component implements JobInterface
 {
+    protected $name;
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
     /**
      * @param \GearmanJob $job
      * @return JobWorkload
