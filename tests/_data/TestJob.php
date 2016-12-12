@@ -14,6 +14,8 @@ class TestJob extends JobBase
 {
     public function execute(\GearmanJob $job = null)
     {
+        ob_start();
         var_dump($job, $job->workload(), $job->workloadSize(), $job->unique(), $job->functionName(), $job->handle(), $job->returnCode());
+        file_put_contents(__DIR__.'/../_output/log.txt', ob_get_contents(), FILE_APPEND);
     }
 }

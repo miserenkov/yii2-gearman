@@ -35,3 +35,6 @@ before_script:
 
 script:
   - composer run tests
+
+after_success:
+  - cat tests/_output/log.txt
