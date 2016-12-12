@@ -12,8 +12,12 @@ use miserenkov\gearman\JobBase;
 
 class TestJob extends JobBase
 {
+    public function getName()
+    {
+        return 'test job';
+    }
     public function execute(\GearmanJob $job = null)
     {
-        var_dump($job);
+        var_dump($job, $job->workload(), $job->workloadSize());
     }
 }

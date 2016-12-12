@@ -37,7 +37,7 @@ class ComponentTest extends Codeception\Test\Unit
             'gearmanComponent' => 'gearman'
         ];
 
-        for ($i = 0; $i < 10000; $i++) {
+        for ($i = 0; $i < 100; $i++) {
             Yii::$app->gearman->getDispatcher()->background('testJob', new \miserenkov\gearman\JobWorkload([
                 'params' => [
                     'data' => $i
@@ -45,6 +45,6 @@ class ComponentTest extends Codeception\Test\Unit
             ]));
         }
 
-        Yii::$app->runAction('gearman/start 1');
+        Yii::$app->runAction('gearman/start');
     }
 }

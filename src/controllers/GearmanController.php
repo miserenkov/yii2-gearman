@@ -23,7 +23,7 @@ class GearmanController extends Controller
 
     public $gearmanComponent = 'gearman';
 
-    public function actionStart($id)
+    public function actionStart($id = 1)
     {
         $app = $this->getApplication($id);
         $process = $app->getProcess($id);
