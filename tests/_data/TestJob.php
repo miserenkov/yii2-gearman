@@ -14,6 +14,6 @@ class TestJob extends JobBase
 {
     public function execute(\GearmanJob $job = null)
     {
-        var_dump($job, $job->workload(), $job->workloadSize());
+        var_dump($job, $job->workload(), $job->workloadSize(), $job->unique(), $job->functionName(), $job->handle(), $job->returnCode());
     }
 }

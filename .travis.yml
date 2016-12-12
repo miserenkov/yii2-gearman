@@ -19,36 +19,19 @@ addons:
   apt:
     packages:
       - gearman-job-server
-      - php-pear
-      - make
       - libgearman-dev
 
-#services:
-#  - mongodb
-#  - mysql
-#  - postgresql
-
-#before_install:
-#  - mysql -u root -e "CREATE DATABASE travis_test;"
-#  - psql -c "CREATE DATABASE travis_test;" -U postgres
-#  - pecl install -f mongodb-1.2.0
-#  - mongo travis_test --eval 'db.addUser("travis", "test");'
-
 before_install:
-#  - |
-#     if [[ $TRAVIS_PHP_VERSION = "7."* ]]; then
-#        sudo add-apt-repository -y ppa:ondrej/php
-#        sudo apt-get update
-#        sudo apt-get install -y php-gearman
-#      else
   - pecl install gearman-1.0.3
-#      fi
-  - echo "extension=gearman.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-
-install:
   - composer self-update
   - composer global require "fxp/composer-asset-plugin:*"
   - composer install
+
+install:
   - composer run build-tests
 
-script: composer run tests
+before_script:
+  - gearmand -d
+
+script:
+  - composer run tests
