@@ -34,7 +34,8 @@ class ComponentTest extends Codeception\Test\Unit
 
         Yii::$app->controllerMap['gearman'] = [
             'class' => 'miserenkov\gearman\controllers\GearmanController',
-            'gearmanComponent' => 'gearman'
+            'gearmanComponent' => 'gearman',
+            'fork' => false
         ];
 
         for ($i = 0; $i < 100; $i++) {
