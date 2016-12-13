@@ -9,26 +9,32 @@
 namespace miserenkov\gearman\lib;
 
 use Psr\Log\LoggerInterface;
+
 class Process
 {
     const PID_FILE = 'gearmanhandler';
     const LOCK_FILE = 'gearmanhandler';
+
     /**
      * @var Config
      */
     private $config;
+
     /**
      * @var LoggerInterface
      */
     private $logger;
+
     /**
      * @var resource
      */
     private $lock;
+
     /**
      * @var int
      */
     private $workerId;
+
     /**
      * @param Config $config
      * @param int $id
@@ -38,10 +44,11 @@ class Process
     {
         $this->workerId = $id;
         $this->setConfig($config);
-        if (null !== $logger) {
+        if ($logger !== null) {
             $this->setLogger($logger);
         }
     }
+
     /**
      * @return string
      */
@@ -49,6 +56,7 @@ class Process
     {
         return sys_get_temp_dir() . DIRECTORY_SEPARATOR . self::PID_FILE . '.' . $this->workerId . '.pid';
     }
+
     /**
      * @return string
      */
@@ -64,7 +72,7 @@ class Process
         }
         if (isset($pid) && $pid) {
             posix_kill($pid, SIGUSR1);
-            if (null !== $this->logger) {
+            if ($this->logger !== null) {
                 $this->logger->debug("Stopped GearmanWorker Daemon {$pid}");
             }
         }
@@ -73,16 +81,18 @@ class Process
         }
         $this->release();
     }
+
     /**
      * @param string $pid
      */
     public function setPid($pid)
     {
-        if (null !== $this->logger) {
+        if ($this->logger !== null) {
             $this->logger->debug("Started GearmanWorker Daemon {$pid}");
         }
         file_put_contents($this->getPidFile(), $pid);
     }
+
     /**
      * @return bool|resource
      */
@@ -94,15 +104,16 @@ class Process
         }
         return false;
     }
+
     /**
      * @param resource|null $fp
      * @return null
      */
     public function release($fp = null)
     {
-        if (null === $fp && null === $this->lock) {
+        if ($fp === null && $this->lock === null) {
             return null;
-        } elseif (null === $fp) {
+        } elseif ($fp === null) {
             $fp = $this->lock;
         }
         if (is_resource($fp)) {
@@ -114,6 +125,7 @@ class Process
         }
         $this->lock = null;
     }
+
     /**
      * @return bool
      */
@@ -127,6 +139,7 @@ class Process
         fclose($fp);
         return false;
     }
+
     /**
      * @param Config $config
      * @return $this
@@ -136,6 +149,7 @@ class Process
         $this->config = $config;
         return $this;
     }
+
     /**
      * @return Config
      */
@@ -143,6 +157,7 @@ class Process
     {
         return $this->config;
     }
+
     /**
      * @return LoggerInterface
      */
@@ -150,6 +165,7 @@ class Process
     {
         return $this->logger;
     }
+
     /**
      * @param LoggerInterface $logger
      * @return $this

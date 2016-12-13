@@ -11,24 +11,29 @@ namespace miserenkov\gearman\lib;
 
 use Psr\Log\LoggerInterface;
 use miserenkov\gearman\exceptions\ServerConnectionException;
+
 class Client
 {
     /**
      * @var \GearmanClient
      */
     private $client;
+
     /**
      * @var Config
      */
     private $config;
+
     /**
      * @var LoggerInterface
      */
     private $logger;
+
     /**
      * @var bool
      */
     private $hasServers = false;
+
     /**
      * @param Config $config
      * @param null|LoggerInterface $logger
@@ -37,10 +42,11 @@ class Client
     {
         $this->setClient(new \GearmanClient());
         $this->setConfig($config);
-        if (null !== $logger) {
+        if ($logger !== null) {
             $this->setLogger($logger);
         }
     }
+
     /**
      * @return $this
      * @throws ServerConnectionException
@@ -56,7 +62,7 @@ class Client
                 $client->addServer($server->getHost(), $server->getPort());
             } catch (\GearmanException $e) {
                 $message = 'Unable to connect to Gearman Server ' . $server->getHost() . ':' . $server->getPort();
-                if (null !== $this->logger) {
+                if ($this->logger !== null) {
                     $this->logger->error($message);
                 }
                 $exceptions[] = $message;
@@ -69,6 +75,7 @@ class Client
         }
         return $this;
     }
+
     /**
      * @return \GearmanClient
      */
@@ -79,6 +86,7 @@ class Client
         }
         return $this->client;
     }
+
     /**
      * @param \GearmanClient $client
      * @return $this
@@ -88,6 +96,7 @@ class Client
         $this->client = $client;
         return $this;
     }
+
     /**
      * @return Config
      */
@@ -95,6 +104,7 @@ class Client
     {
         return $this->config;
     }
+
     /**
      * @param Config $config
      * @return $this
@@ -104,6 +114,7 @@ class Client
         $this->config = $config;
         return $this;
     }
+
     /**
      * @return LoggerInterface
      */
@@ -111,6 +122,7 @@ class Client
     {
         return $this->logger;
     }
+
     /**
      * @param LoggerInterface $logger
      * @return $this

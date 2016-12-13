@@ -11,24 +11,29 @@ namespace miserenkov\gearman\lib;
 
 use Psr\Log\LoggerInterface;
 use miserenkov\gearman\exceptions\ServerConnectionException;
+
 class Worker
 {
     /**
      * @var \GearmanWorker
      */
     private $worker;
+
     /**
      * @var Config
      */
     private $config;
+
     /**
      * @var LoggerInterface
      */
     private $logger;
+
     /**
      * @var array
      */
     private $functions = [];
+
     /**
      * @param Config $config
      * @param null|LoggerInterface $logger
@@ -37,10 +42,11 @@ class Worker
     public function __construct(Config $config, LoggerInterface $logger = null)
     {
         $this->setConfig($config);
-        if (null !== $logger) {
+        if ($logger !== null) {
             $this->setLogger($logger);
         }
     }
+
     public function resetWorker()
     {
         if ($this->worker instanceof \GearmanWorker) {
@@ -49,6 +55,7 @@ class Worker
         $this->worker = null;
         $this->createWorker();
     }
+
     /**
      * @throws ServerConnectionException
      */
@@ -62,7 +69,7 @@ class Worker
                 $this->worker->addServer($server->getHost(), $server->getPort());
             } catch (\GearmanException $e) {
                 $message = 'Unable to connect to Gearman Server ' . $server->getHost() . ':' . $server->getPort();
-                if (null !== $this->logger) {
+                if ($this->logger !== null) {
                     $this->logger->info($message);
                 }
                 $exceptions[] = $message;
@@ -74,6 +81,7 @@ class Worker
             }
         }
     }
+
     /**
      * @return Config
      */
@@ -81,6 +89,7 @@ class Worker
     {
         return $this->config;
     }
+
     /**
      * @param Config $config
      * @return $this
@@ -90,16 +99,18 @@ class Worker
         $this->config = $config;
         return $this;
     }
+
     /**
      * @return \GearmanWorker
      */
     public function getWorker()
     {
-        if (null === $this->worker) {
+        if ($this->worker === null) {
             $this->createWorker();
         }
         return $this->worker;
     }
+
     /**
      * @param \GearmanWorker $worker
      * @return $this
@@ -109,6 +120,7 @@ class Worker
         $this->worker = $worker;
         return $this;
     }
+
     /**
      * @return LoggerInterface
      */
@@ -116,6 +128,7 @@ class Worker
     {
         return $this->logger;
     }
+
     /**
      * @param null|LoggerInterface $logger
      * @return $this

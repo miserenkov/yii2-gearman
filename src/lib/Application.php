@@ -23,50 +23,62 @@ class Application
      * @var Config
      */
     private $config;
+
     /**
      * @var Process
      */
     private $process;
+
     /**
      * @var int
      */
     public $workerId;
+
     /**
      * @var array
      */
     private $callbacks = [];
+
     /**
      * @var StreamSelectLoop|LibEventLoop
      */
     private $loop;
+
     /**
      * @var bool|resource
      */
     private $lock = false;
+
     /**
      * @var bool
      */
     private $kill = false;
+
     /**
      * @var Worker
      */
     private $worker;
+
     /**
      * @var array
      */
     private $jobs = [];
+
     /**
      * @var LoggerInterface
      */
     public $logger;
+
     /**
      * @var bool
      */
     public $isAllowingJob = false;
+
     /**
      * @var Application
      */
     private static $instance;
+
     /**
      * gets the instance via lazy initialization (created on first usage)
      *
@@ -74,11 +86,12 @@ class Application
      */
     public static function getInstance()
     {
-        if (null === static::$instance) {
+        if (static::$instance === null) {
             static::$instance = new static;
         }
         return static::$instance;
     }
+
     /**
      * @param int $workerId
      * @param Config $config
@@ -90,29 +103,32 @@ class Application
     {
         static::$instance = $this;
         $this->workerId = $workerId;
-        if (null === $config) {
+        if ($config === null) {
             $config = Config::getInstance();
         }
         $this->setConfig($config);
-        if (null !== $logger) {
+        if ($logger !== null) {
             $this->setLogger($logger);
         }
-        if (null !== $process) {
+        if ($process !== null) {
             $this->setProcess($process);
         }
         if ($loop instanceof StreamSelectLoop || $loop instanceof LibEventLoop) {
             $this->setLoop($loop);
         }
     }
+
+
     public function __destruct()
     {
         if (is_resource($this->lock)) {
-            if (null !== $this->logger) {
+            if ($this->logger !== null) {
                 $this->logger->info("Stopped GearmanWorker Server");
             }
             $this->getProcess()->release($this->lock);
         }
     }
+
     public function restart()
     {
         $serialized = serialize($this);
@@ -134,6 +150,7 @@ class Application
             exit;
         }
     }
+
     /**
      * @param bool $fork
      * @param bool $restart
@@ -143,6 +160,7 @@ class Application
     {
         $this->runProcess($fork, $restart);
     }
+
     public function addEnvVariables()
     {
         foreach ($this->getConfig()->getEnvVariables() as $key => $variable) {
@@ -152,6 +170,7 @@ class Application
             putenv($var);
         }
     }
+
     /**
      * @param bool $fork
      * @param bool $restart
@@ -180,7 +199,7 @@ class Application
                 }
             }
             $this->lock = $this->getProcess()->lock();
-            if (null !== $this->logger) {
+            if ($this->logger !== null) {
                 $this->logger->info("Started GearmanWorker Server");
             }
             $this->signalHandlers();
@@ -196,6 +215,7 @@ class Application
             }
         }
     }
+
     /**
      * @throws \Exception
      */
@@ -209,7 +229,7 @@ class Application
                 posix_setuid($user['uid']);
                 if (posix_geteuid() !== (int)$user['uid']) {
                     $message = "Unable to change user to {$user['uid']}";
-                    if (null !== $this->logger) {
+                    if ($this->logger !== null) {
                         $this->logger->error($message);
                     }
                     throw new \Exception($message);
@@ -217,6 +237,7 @@ class Application
             }
         }
     }
+
     /**
      * @return $this
      */
@@ -228,6 +249,7 @@ class Application
         });
         return $this;
     }
+
     /**
      * @param bool $restart
      * @return $this
@@ -253,6 +275,7 @@ class Application
         }
         return $this;
     }
+
     /**
      * @param JobInterface $job
      * @param \GearmanJob $gearmanJob
@@ -266,21 +289,23 @@ class Application
             return null;
         }
         $root->isAllowingJob = false;
-        if (null !== $root->logger) {
+        if ($root->logger !== null) {
             $root->logger->info("Executing job {$job->getName()}");
         }
         return $job->execute($gearmanJob);
     }
+
     /**
      * @return Worker
      */
     public function getWorker()
     {
-        if (null === $this->worker) {
+        if ($this->worker === null) {
             $this->setWorker(new Worker($this->getConfig(), $this->getLogger()));
         }
         return $this->worker;
     }
+
     /**
      * @param Worker $worker
      * @return $this
@@ -290,6 +315,7 @@ class Application
         $this->worker = $worker;
         return $this;
     }
+
     /**
      * @param JobInterface $job
      * @return $this
@@ -299,7 +325,7 @@ class Application
         $worker = $this->getWorker()->getWorker();
         $this->jobs[] = $job;
         $root = $this;
-        if(!$job->init()){
+        if (!$job->init()) {
             die();
         }
         $worker->addFunction($job->getName(), function (\GearmanJob $gearmanJob) use ($root, $job) {
@@ -308,6 +334,7 @@ class Application
         });
         return $this;
     }
+
     /**
      * @return array
      */
@@ -315,6 +342,7 @@ class Application
     {
         return $this->jobs;
     }
+
     /**
      * @param \Closure $callback
      * @return $this
@@ -324,6 +352,7 @@ class Application
         $this->callbacks[] = $callback;
         return $this;
     }
+
     /**
      * @return array
      */
@@ -331,6 +360,7 @@ class Application
     {
         return $this->callbacks;
     }
+
     /**
      * @param StreamSelectLoop|LibEventLoop $loop
      * @return $this
@@ -340,16 +370,18 @@ class Application
         $this->loop = $loop;
         return $this;
     }
+
     /**
      * @return LibEventLoop|StreamSelectLoop
      */
     public function getLoop()
     {
-        if (null === $this->loop) {
+        if ($this->loop === null) {
             $this->setLoop(Loop::create());
         }
         return $this->loop;
     }
+
     /**
      * @return bool
      */
@@ -357,6 +389,7 @@ class Application
     {
         return $this->kill;
     }
+
     /**
      * @param $kill
      * @return $this
@@ -366,6 +399,7 @@ class Application
         $this->kill = $kill;
         return $this;
     }
+
     /**
      * @param Config $config
      * @return $this
@@ -375,16 +409,18 @@ class Application
         $this->config = $config;
         return $this;
     }
+
     /**
      * @return Config
      */
     public function getConfig()
     {
-        if (null === $this->config) {
+        if ($this->config === null) {
             $this->setConfig(new Config);
         }
         return $this->config;
     }
+
     /**
      * @param Process $process
      * @return $this
@@ -394,16 +430,18 @@ class Application
         $this->process = $process;
         return $this;
     }
+
     /**
      * @return Process
      */
     public function getProcess()
     {
-        if (null === $this->process) {
+        if ($this->process === null) {
             $this->setProcess(new Process($this->getConfig(), $this->workerId, $this->getLogger()));
         }
         return $this->process;
     }
+
     /**
      * @return LoggerInterface
      */
@@ -411,6 +449,7 @@ class Application
     {
         return $this->logger;
     }
+
     /**
      * @param LoggerInterface $logger
      * @return $this

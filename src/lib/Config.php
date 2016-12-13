@@ -13,39 +13,48 @@ class Config implements \Serializable
 {
     const SERVER_PORT_SEPARATOR = ':';
     const SERVERS_SEPARATOR = ',';
+
     /**
      * @var string
      */
     private $bootstrap;
+
     /**
      * @var string
      */
     private $class;
+
     /**
      * @var Server[]
      */
     private $servers = [];
+
     /**
      * @var int
      * todo implement this
      */
     private $workerLifetime = 0;
+
     /**
      * @var bool
      */
     private $autoUpdate = false;
+
     /**
      * @var string
      */
     private $user;
+
     /**
      * @var array
      */
     private $envVariables;
+
     /**
      * @var Config
      */
     private static $instance;
+
     /**
      * gets the instance via lazy initialization (created on first usage)
      *
@@ -53,21 +62,23 @@ class Config implements \Serializable
      */
     public static function getInstance()
     {
-        if (null === static::$instance) {
+        if (static::$instance === null) {
             static::$instance = new static;
         }
         return static::$instance;
     }
+
     /**
      * @param array $params
      */
     public function __construct(array $params = null)
     {
         static::$instance = $this;
-        if (null !== $params) {
+        if ($params !== null) {
             $this->set($params);
         }
     }
+
     /**
      * @param array|string $params
      * @param null|mixed $value
@@ -84,7 +95,7 @@ class Config implements \Serializable
                         $this->addServer($value);
                         break;
                     case 'servers':
-                        if (null !== $value) {
+                        if ($value !== null) {
                             $this->addServers($value);
                         }
                         break;
@@ -114,6 +125,7 @@ class Config implements \Serializable
             }
         }
     }
+
     /**
      * @param string $key
      * @return null|mixed
@@ -152,6 +164,7 @@ class Config implements \Serializable
         }
         return null;
     }
+
     /**
      * @param string $host
      * @param null|int $port
@@ -159,12 +172,13 @@ class Config implements \Serializable
      */
     public function addServer($host = null, $port = null)
     {
-        if (null !== $host && null === $port && strpos($host, self::SERVER_PORT_SEPARATOR) !== false) {
+        if ($host != null && $port === null && strpos($host, self::SERVER_PORT_SEPARATOR) !== false) {
             list($host, $port) = explode(self::SERVER_PORT_SEPARATOR, $host, 2);
         }
         $this->servers[] = new Server($host, $port);
         return $this;
     }
+
     /**
      * @param array|string $servers
      * @return $this
@@ -193,6 +207,7 @@ class Config implements \Serializable
         }
         return $this;
     }
+
     /**
      * @return Server
      */
@@ -203,6 +218,7 @@ class Config implements \Serializable
         }
         return null;
     }
+
     /**
      * @param string $server
      * @param int|null $port
@@ -214,6 +230,7 @@ class Config implements \Serializable
         $this->addServer($server, $port);
         return $this;
     }
+
     /**
      * @return Server[]
      */
@@ -221,6 +238,7 @@ class Config implements \Serializable
     {
         return $this->servers;
     }
+
     /**
      * @param bool $autoUpdate
      * @return $this
@@ -230,6 +248,7 @@ class Config implements \Serializable
         $this->autoUpdate = $autoUpdate;
         return $this;
     }
+
     /**
      * @return boolean
      */
@@ -237,6 +256,7 @@ class Config implements \Serializable
     {
         return $this->autoUpdate;
     }
+
     /**
      * @param string $bootstrap
      * @return $this
@@ -246,6 +266,7 @@ class Config implements \Serializable
         $this->bootstrap = $bootstrap;
         return $this;
     }
+
     /**
      * @return string
      */
@@ -253,6 +274,7 @@ class Config implements \Serializable
     {
         return $this->bootstrap;
     }
+
     /**
      * @param string $class
      * @return $this
@@ -262,6 +284,7 @@ class Config implements \Serializable
         $this->class = $class;
         return $this;
     }
+
     /**
      * @return string
      */
@@ -269,6 +292,7 @@ class Config implements \Serializable
     {
         return $this->class;
     }
+
     /**
      * @param int $workerLifetime
      * @return $this
@@ -278,6 +302,7 @@ class Config implements \Serializable
         $this->workerLifetime = $workerLifetime;
         return $this;
     }
+
     /**
      * @return int
      */
@@ -285,6 +310,7 @@ class Config implements \Serializable
     {
         return $this->workerLifetime;
     }
+
     /**
      * @return array
      */
@@ -292,6 +318,7 @@ class Config implements \Serializable
     {
         return $this->envVariables;
     }
+
     /**
      * @param array $envVariables
      * @return $this
@@ -301,6 +328,7 @@ class Config implements \Serializable
         $this->envVariables = $envVariables;
         return $this;
     }
+
     /**
      * @param string $user
      * @return $this
@@ -310,6 +338,7 @@ class Config implements \Serializable
         $this->user = $user;
         return $this;
     }
+
     /**
      * @return string
      */
@@ -317,6 +346,7 @@ class Config implements \Serializable
     {
         return $this->user;
     }
+
     /**
      * @return string
      */
@@ -332,6 +362,7 @@ class Config implements \Serializable
             'envVariables' => $this->getEnvVariables()
         ]);
     }
+
     /**
      * @param string $serialized
      */

@@ -12,6 +12,7 @@ namespace miserenkov\gearman;
 use miserenkov\gearman\lib\Application;
 use miserenkov\gearman\lib\Config;
 use miserenkov\gearman\lib\Dispatcher;
+use miserenkov\gearman\lib\Logger;
 use miserenkov\gearman\lib\Process;
 use yii\base\Component;
 use yii\base\InvalidConfigException;
@@ -32,10 +33,17 @@ class Gearman extends Component
 
     private $_process;
 
+    private $_logger;
+
+    /**
+     * @param integer $id
+     * @return Application
+     * @throws InvalidConfigException
+     */
     public function getApplication($id)
     {
         if($this->_application === null) {
-            $app = new Application($id, $this->getConfig(), $this->getProcess($id));
+            $app = new Application($id, $this->getConfig(), $this->getProcess($id), null, $this->getLogger());
             foreach($this->jobs as $name => $job) {
                 $job = \Yii::createObject($job);
                 if(!($job instanceof JobInterface)) {
@@ -108,5 +116,17 @@ class Gearman extends Component
         }
         $this->_process = $process;
         return $this;
+    }
+
+    /**
+     * @return Logger
+     */
+    public function getLogger()
+    {
+        if ($this->_logger === null) {
+            $this->_logger = new Logger();
+        }
+
+        return $this->_logger;
     }
 }

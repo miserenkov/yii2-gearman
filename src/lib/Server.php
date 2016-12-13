@@ -15,23 +15,26 @@ class Server implements \Serializable
      * @var string
      */
     private $host = '127.0.0.1';
+
     /**
      * @var int
      */
     private $port = 4730;
+
     /**
      * @param string|null $host
      * @param int|null $port
      */
     public function __construct($host = null, $port = null)
     {
-        if (null !== $host) {
+        if ($host !== null) {
             $this->setHost($host);
         }
-        if (null !== $port) {
+        if ($port !== null) {
             $this->setPort($port);
         }
     }
+
     /**
      * @return string
      */
@@ -39,6 +42,7 @@ class Server implements \Serializable
     {
         return $this->host;
     }
+
     /**
      * @param string $host
      * @return $this
@@ -48,6 +52,7 @@ class Server implements \Serializable
         $this->host = $host;
         return $this;
     }
+
     /**
      * @return int
      */
@@ -55,6 +60,7 @@ class Server implements \Serializable
     {
         return $this->port;
     }
+
     /**
      * @param int $port
      * @return $this
@@ -64,6 +70,7 @@ class Server implements \Serializable
         $this->port = $port;
         return $this;
     }
+
     /**
      * @return string
      */
@@ -74,6 +81,7 @@ class Server implements \Serializable
             'port' => $this->getPort(),
         ]);
     }
+
     /**
      * @param string $serialized
      */

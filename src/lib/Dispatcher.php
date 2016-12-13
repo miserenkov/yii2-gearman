@@ -16,18 +16,22 @@ class Dispatcher
     const NORMAL = 0;
     const LOW = 1;
     const HIGH = 2;
+
     /**
      * @var Client
      */
     private $client;
+
     /**
      * @var Config
      */
     private $config;
+
     /**
      * @var LoggerInterface
      */
     private $logger;
+
     /**
      * @param Config $config
      * @param LoggerInterface|null $logger
@@ -35,10 +39,11 @@ class Dispatcher
     public function __construct(Config $config, LoggerInterface $logger = null)
     {
         $this->setConfig($config);
-        if (null !== $logger) {
+        if ($logger !== null) {
             $this->setLogger($logger);
         }
     }
+
     /**
      * @param string $name
      * @param mixed $data
@@ -49,7 +54,7 @@ class Dispatcher
     public function background($name, $data = null, $priority = self::NORMAL, $unique = null)
     {
         $client = $this->getClient()->getClient();
-        if (null !== $this->logger) {
+        if ($this->logger !== null) {
             $this->logger->debug("Sent background job \"{$name}\" to GearmanClient");
         }
         $jobHandle = null;
@@ -65,16 +70,17 @@ class Dispatcher
                 break;
         }
         if ($client->returnCode() !== GEARMAN_SUCCESS) {
-            if (null !== $this->logger) {
+            if ($this->logger !== null) {
                 $this->logger->error("Bad return code");
             }
         }
-        if (null !== $this->logger) {
+        if ($this->logger !== null) {
             $this->logger->info("Sent job \"{$jobHandle}\" to GearmanWorker");
         }
 
         return $jobHandle;
     }
+
     /**
      * @param string $name
      * @param mixed $data
@@ -85,7 +91,7 @@ class Dispatcher
     public function execute($name, $data = null, $priority = self::NORMAL, $unique = null)
     {
         $client = $this->getClient()->getClient();
-        if (null !== $this->logger) {
+        if ($this->logger !== null) {
             $this->logger->debug("Sent job \"{$name}\" to GearmanClient");
         }
         $result = null;
@@ -101,15 +107,16 @@ class Dispatcher
                 break;
         }
         if ($client->returnCode() !== GEARMAN_SUCCESS) {
-            if (null !== $this->logger) {
+            if ($this->logger !== null) {
                 $this->logger->error("Bad return code");
             }
         }
-        if (null !== $this->logger) {
+        if ($this->logger !== null) {
             $this->logger->debug("Job \"{$name}\" returned {$result}");
         }
         return unserialize($result);
     }
+
     /**
      * @param mixed $data
      * @return string
@@ -118,6 +125,7 @@ class Dispatcher
     {
         return serialize($data);
     }
+
     /**
      * @param Client|null $client
      * @return $this
@@ -127,16 +135,18 @@ class Dispatcher
         $this->client = $client;
         return $this;
     }
+
     /**
      * @return Client|null
      */
     public function getClient()
     {
-        if (null === $this->client) {
+        if ($this->client === null) {
             $this->setClient(new Client($this->getConfig(), $this->getLogger()));
         }
         return $this->client;
     }
+
     /**
      * @param Config $config
      * @return $this
@@ -146,6 +156,7 @@ class Dispatcher
         $this->config = $config;
         return $this;
     }
+
     /**
      * @return Config
      */
@@ -153,6 +164,7 @@ class Dispatcher
     {
         return $this->config;
     }
+
     /**
      * @return LoggerInterface
      */
@@ -160,6 +172,7 @@ class Dispatcher
     {
         return $this->logger;
     }
+
     /**
      * @param LoggerInterface $logger
      * @return $this

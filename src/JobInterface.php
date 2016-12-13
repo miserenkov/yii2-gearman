@@ -12,6 +12,11 @@ namespace miserenkov\gearman;
 interface JobInterface
 {
     /**
+     * @return bool
+     */
+    public function init();
+
+    /**
      * @return string
      */
     public function getName();

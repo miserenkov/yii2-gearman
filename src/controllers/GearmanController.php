@@ -23,10 +23,16 @@ class GearmanController extends Controller
 
     public $gearmanComponent = 'gearman';
 
+    /**
+     * Start all workers
+     *
+     * @param int $id
+     * @return void
+     */
     public function actionStart($id = 1)
     {
         $app = $this->getApplication($id);
-        $process = $app->getProcess($id);
+        $process = $app->getProcess();
 
         if ($process->isRunning()) {
             $this->stdout("Failed: Process is already running\n", Console::FG_RED);
@@ -36,10 +42,16 @@ class GearmanController extends Controller
         $this->runApplication($app);
     }
 
-    public function actionStop($id)
+    /**
+     * Stop all workers
+     *
+     * @param int $id
+     * @return void
+     */
+    public function actionStop($id = 1)
     {
         $app = $this->getApplication($id);
-        $process = $app->getProcess($id);
+        $process = $app->getProcess();
 
         if ($process->isRunning()) {
             $this->stdout("Success: Process is stopped\n", Console::FG_GREEN);
@@ -50,10 +62,16 @@ class GearmanController extends Controller
         $process->stop();
     }
 
-    public function actionRestart($id)
+    /**
+     * Restart all workers
+     *
+     * @param int $id
+     * @return void
+     */
+    public function actionRestart($id = 1)
     {
         $app = $this->getApplication($id);
-        $process = $app->getProcess($id);
+        $process = $app->getProcess();
 
         if (!$process->isRunning()) {
             $this->stdout("Failed: Process is not running\n", Console::FG_RED);
@@ -80,7 +98,11 @@ class GearmanController extends Controller
         $this->runApplication($app);
     }
 
-    public function options($id)
+    /**
+     * @param int $id
+     * @return array
+     */
+    public function options($id = 1)
     {
         $options = [];
         if(in_array($id, ['start', 'restart'])) {
@@ -91,15 +113,23 @@ class GearmanController extends Controller
     }
 
     /**
+     * Get application
+     *
      * @param $id
-     * @return Gearman
+     * @return Application
      */
-    protected function getApplication($id)
+    protected function getApplication($id = 1)
     {
         $component = \Yii::$app->get($this->gearmanComponent);
         return $component->getApplication($id);
     }
 
+    /**
+     * Run application
+     *
+     * @param Application $app
+     * @return void
+     */
     protected function runApplication(Application $app)
     {
         $fork = (bool) $this->fork;

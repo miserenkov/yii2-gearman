@@ -10,19 +10,34 @@ namespace miserenkov\gearman;
 
 
 use yii\base\Object;
+use yii\base\UnknownPropertyException;
 
 class JobWorkload extends Object implements \Serializable
 {
-    protected $params = [];
+    private $params = [];
 
-    public function setParams($params)
+    public function __set($name, $value)
     {
-        $this->params = $params;
+        $this->params[$name] = $value;
     }
 
-    public function getParams()
+    public function __get($name)
     {
-        return $this->params;
+        if (isset($this->params[$name])) {
+            return $this->params[$name];
+        } else {
+            throw new UnknownPropertyException('Getting unknown property: ' . get_class($this) . '::' . $name);
+        }
+    }
+
+    public function __isset($name)
+    {
+        return isset($this->params[$name]);
+    }
+
+    public function __unset($name)
+    {
+        unset($this->params[$name]);
     }
 
     public function serialize()

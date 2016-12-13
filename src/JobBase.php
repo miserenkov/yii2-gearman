@@ -15,6 +15,11 @@ abstract class JobBase extends Component implements JobInterface
 {
     protected $name;
 
+    public function init()
+    {
+        return true;
+    }
+
     public function getName()
     {
         return $this->name;
