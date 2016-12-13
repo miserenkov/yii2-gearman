@@ -10,11 +10,10 @@
 namespace miserenkov\gearman\lib;
 
 
-use miserenkov\gearman\JobInterface;
-use Psr\Log\LoggerInterface;
 use React\EventLoop\Factory as Loop;
 use React\EventLoop\LibEventLoop;
 use React\EventLoop\StreamSelectLoop;
+use miserenkov\gearman\JobInterface;
 use miserenkov\gearman\exceptions\InvalidBootstrapClassException;
 
 class Application
@@ -65,7 +64,7 @@ class Application
     private $jobs = [];
 
     /**
-     * @var LoggerInterface
+     * @var Logger
      */
     public $logger;
 
@@ -97,9 +96,9 @@ class Application
      * @param Config $config
      * @param StreamSelectLoop|LibEventLoop $loop
      * @param Process $process
-     * @param LoggerInterface|null $logger
+     * @param Logger|null $logger
      */
-    public function __construct($workerId = 1, Config $config = null, Process $process = null, $loop = null, LoggerInterface $logger = null)
+    public function __construct($workerId = 1, Config $config = null, Process $process = null, $loop = null, Logger $logger = null)
     {
         static::$instance = $this;
         $this->workerId = $workerId;
@@ -443,7 +442,7 @@ class Application
     }
 
     /**
-     * @return LoggerInterface
+     * @return Logger
      */
     public function getLogger()
     {
@@ -451,10 +450,10 @@ class Application
     }
 
     /**
-     * @param LoggerInterface $logger
+     * @param Logger $logger
      * @return $this
      */
-    public function setLogger(LoggerInterface $logger)
+    public function setLogger(Logger $logger)
     {
         $this->logger = $logger;
         return $this;

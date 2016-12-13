@@ -8,7 +8,6 @@
 
 namespace miserenkov\gearman\lib;
 
-use Psr\Log\LoggerInterface;
 
 class Process
 {
@@ -21,7 +20,7 @@ class Process
     private $config;
 
     /**
-     * @var LoggerInterface
+     * @var Logger
      */
     private $logger;
 
@@ -38,9 +37,9 @@ class Process
     /**
      * @param Config $config
      * @param int $id
-     * @param LoggerInterface $logger
+     * @param Logger $logger
      */
-    public function __construct(Config $config, $id, LoggerInterface $logger = null)
+    public function __construct(Config $config, $id, Logger $logger = null)
     {
         $this->workerId = $id;
         $this->setConfig($config);
@@ -159,7 +158,7 @@ class Process
     }
 
     /**
-     * @return LoggerInterface
+     * @return Logger
      */
     public function getLogger()
     {
@@ -167,10 +166,10 @@ class Process
     }
 
     /**
-     * @param LoggerInterface $logger
+     * @param Logger $logger
      * @return $this
      */
-    public function setLogger(LoggerInterface $logger)
+    public function setLogger(Logger $logger)
     {
         $this->logger = $logger;
         return $this;

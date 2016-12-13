@@ -18,8 +18,7 @@
   "require": {
     "php": ">=5.5.0",
     "yiisoft/yii2": "^2.0.6",
-    "react/event-loop": "0.4.*",
-    "psr/log": "~1"
+    "react/event-loop": "0.4.*"
   },
   "autoload": {
     "psr-4": {

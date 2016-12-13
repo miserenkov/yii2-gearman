@@ -9,7 +9,6 @@
 namespace miserenkov\gearman\lib;
 
 
-use Psr\Log\LoggerInterface;
 use miserenkov\gearman\exceptions\ServerConnectionException;
 
 class Worker
@@ -25,7 +24,7 @@ class Worker
     private $config;
 
     /**
-     * @var LoggerInterface
+     * @var Logger
      */
     private $logger;
 
@@ -36,10 +35,10 @@ class Worker
 
     /**
      * @param Config $config
-     * @param null|LoggerInterface $logger
+     * @param null|Logger $logger
      * @throws ServerConnectionException
      */
-    public function __construct(Config $config, LoggerInterface $logger = null)
+    public function __construct(Config $config, Logger $logger = null)
     {
         $this->setConfig($config);
         if ($logger !== null) {
@@ -122,7 +121,7 @@ class Worker
     }
 
     /**
-     * @return LoggerInterface
+     * @return Logger
      */
     public function getLogger()
     {
@@ -130,10 +129,10 @@ class Worker
     }
 
     /**
-     * @param null|LoggerInterface $logger
+     * @param null|Logger $logger
      * @return $this
      */
-    public function setLogger(LoggerInterface $logger = null)
+    public function setLogger(Logger $logger = null)
     {
         $this->logger = $logger;
         return $this;

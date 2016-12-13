@@ -33,7 +33,7 @@ abstract class JobBase extends Component implements JobInterface
      * @param \GearmanJob $job
      * @return JobWorkload
      */
-    protected function getWorkload(\GearmanJob $job)
+    public function getWorkload(\GearmanJob $job)
     {
         $workload = null;
         if($data = $job->workload()) {

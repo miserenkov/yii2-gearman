@@ -9,11 +9,10 @@
 namespace miserenkov\gearman\lib;
 
 
-use Psr\Log\LoggerInterface;
 use yii\base\Object;
 use yii\log\Logger as YiiLogger;
 
-class Logger extends Object implements LoggerInterface
+class Logger extends Object
 {
     /**
      * @var YiiLogger
@@ -30,72 +29,72 @@ class Logger extends Object implements LoggerInterface
     /**
      * @inheritdoc
      */
-    public function emergency($message, array $context = array())
+    public function emergency($message)
     {
-        $this->log(YiiLogger::LEVEL_INFO, $message, $context);
+        $this->log(YiiLogger::LEVEL_INFO, $message);
     }
 
     /**
      * @inheritdoc
      */
-    public function alert($message, array $context = array())
+    public function alert($message)
     {
-        $this->log(YiiLogger::LEVEL_ERROR, $message, $context);
+        $this->log(YiiLogger::LEVEL_ERROR, $message);
     }
 
     /**
      * @inheritdoc
      */
-    public function critical($message, array $context = array())
+    public function critical($message)
     {
-        $this->log(YiiLogger::LEVEL_ERROR, $message, $context);
+        $this->log(YiiLogger::LEVEL_ERROR, $message);
     }
 
     /**
      * @inheritdoc
      */
-    public function error($message, array $context = array())
+    public function error($message)
     {
-        $this->log(YiiLogger::LEVEL_ERROR, $message, $context);
+        $this->log(YiiLogger::LEVEL_ERROR, $message);
     }
 
     /**
      * @inheritdoc
      */
-    public function warning($message, array $context = array())
+    public function warning($message)
     {
-        $this->log(YiiLogger::LEVEL_WARNING, $message, $context);
+        $this->log(YiiLogger::LEVEL_WARNING, $message);
     }
 
     /**
      * @inheritdoc
      */
-    public function notice($message, array $context = array())
+    public function notice($message)
     {
-        $this->log(YiiLogger::LEVEL_INFO, $message, $context);
+        $this->log(YiiLogger::LEVEL_INFO, $message);
     }
 
     /**
      * @inheritdoc
      */
-    public function info($message, array $context = array())
+    public function info($message)
     {
-        $this->log(YiiLogger::LEVEL_INFO, $message, $context);
+        $this->log(YiiLogger::LEVEL_INFO, $message);
     }
 
     /**
      * @inheritdoc
      */
-    public function debug($message, array $context = array())
+    public function debug($message)
     {
-        $this->log(YiiLogger::LEVEL_TRACE, $message, $context);
+        $this->log(YiiLogger::LEVEL_TRACE, $message);
     }
 
     /**
      * @inheritdoc
      */
-    public function log($level, $message, array $context = array())
+    public function log($level, $message)
     {
-        $this->logger->log($message, $level);
+        $this->logger->log($message, $level, 'miserenkov\gearman');
     }
 }

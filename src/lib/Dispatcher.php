@@ -9,8 +9,6 @@
 namespace miserenkov\gearman\lib;
 
 
-use Psr\Log\LoggerInterface;
-
 class Dispatcher
 {
     const NORMAL = 0;
@@ -28,15 +26,15 @@ class Dispatcher
     private $config;
 
     /**
-     * @var LoggerInterface
+     * @var Logger
      */
     private $logger;
 
     /**
      * @param Config $config
-     * @param LoggerInterface|null $logger
+     * @param Logger|null $logger
      */
-    public function __construct(Config $config, LoggerInterface $logger = null)
+    public function __construct(Config $config, Logger $logger = null)
     {
         $this->setConfig($config);
         if ($logger !== null) {
@@ -166,7 +164,7 @@ class Dispatcher
     }
 
     /**
-     * @return LoggerInterface
+     * @return Logger
      */
     public function getLogger()
     {
@@ -174,10 +172,10 @@ class Dispatcher
     }
 
     /**
-     * @param LoggerInterface $logger
+     * @param Logger $logger
      * @return $this
      */
-    public function setLogger(LoggerInterface $logger)
+    public function setLogger(Logger $logger)
     {
         $this->logger = $logger;
         return $this;
