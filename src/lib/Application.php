@@ -66,7 +66,7 @@ class Application
     /**
      * @var Logger
      */
-    public $logger;
+    private $logger;
 
     /**
      * @var bool
